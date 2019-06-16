@@ -17,14 +17,12 @@ RUN set -ex \
  && apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y \
         mopidy \
-        mopidy-soundcloud \
         mopidy-spotify \
  && curl -L https://bootstrap.pypa.io/get-pip.py | python - \
  && pip install -U six pyasn1 requests[security] cryptography \
  && pip install \
         Mopidy-Iris \
         Mopidy-Moped \
-        Mopidy-GMusic \
         Mopidy-Pandora \
         Mopidy-YouTube \
         pyopenssl \
@@ -59,7 +57,7 @@ USER mopidy
 
 VOLUME ["/var/lib/mopidy/local", "/var/lib/mopidy/media"]
 
-EXPOSE 6600 6680 5555/udp
+EXPOSE 1704 1705 6600 6680 5555/udp
 
 ENTRYPOINT ["/usr/bin/dumb-init", "/entrypoint.sh"]
 CMD ["/usr/bin/mopidy"]
