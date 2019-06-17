@@ -53,6 +53,7 @@ COPY entrypoint.sh /entrypoint.sh
 # Default configuration.
 COPY mopidy.conf /config/mopidy.conf
 
+RUN mkdir -p /var/lib/snapserver
 RUN snapserver -v
 COPY snapserver.conf /etc/default/snapserver
 
