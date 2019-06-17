@@ -6,4 +6,6 @@ then
     export PULSE_COOKIE=$HOME/pulse.cookie
 fi
 
+source /etc/default/snapserver && snapserver $SNAPSERVER_OPTS
+
 exec "$@"
