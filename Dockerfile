@@ -1,10 +1,15 @@
 FROM debian:stretch-slim
 
+ARG  snapcast_version=0.15.0
+ENV  STREAM_NAME snapserver
+
 RUN set -ex \
     # Official Mopidy install for Debian/Ubuntu along with some extensions
     # (see https://docs.mopidy.com/en/latest/installation/debian/ )
  && apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+        wget \
+        ca-certificates \
         curl \
         dumb-init \
         gcc \
@@ -36,11 +41,23 @@ RUN set -ex \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
+RUN  apt-get update \
+  && apt-get install -y wget ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
+RUN  wget https://github.com/badaix/snapcast/releases/download/v${snapcast_version}/snapserver_${snapcast_version}_amd64.deb
+RUN  dpkg -i snapserver_${snapcast_version}_amd64.deb \
+  ;  apt-get update \
+  && apt-get -f install -y \
+  && rm -rf /var/lib/apt/lists/*
+
 # Start helper script.
 COPY entrypoint.sh /entrypoint.sh
 
 # Default configuration.
 COPY mopidy.conf /config/mopidy.conf
+
+RUN snapserver -v
+COPY snapserver.conf /etc/default/snapserver
 
 # Copy the pulse-client configuratrion.
 COPY pulse-client.conf /etc/pulse/client.conf
@@ -48,12 +65,12 @@ COPY pulse-client.conf /etc/pulse/client.conf
 # Allows any user to run mopidy, but runs by default as a randomly generated UID/GID.
 ENV HOME=/var/lib/mopidy
 RUN set -ex \
- && usermod -G audio,sudo mopidy \
+ && usermod -G audio,sudo audio \
  && chown mopidy:audio -R $HOME /entrypoint.sh \
  && chmod go+rwx -R $HOME /entrypoint.sh
 
 # Runs as mopidy user by default.
-USER mopidy
+USER audio
 
 VOLUME ["/var/lib/mopidy/local", "/var/lib/mopidy/media"]
 
