@@ -54,7 +54,7 @@ COPY entrypoint.sh /entrypoint.sh
 COPY mopidy.conf /config/mopidy.conf
 
 RUN mkdir -p /var/lib/snapserver \
- && chown mopidy:audio
+ && chown mopidy:audio -R /var/lib/snapserver
 RUN snapserver -v
 COPY snapserver.conf /etc/default/snapserver
 
