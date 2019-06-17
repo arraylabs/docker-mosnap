@@ -53,14 +53,13 @@ COPY entrypoint.sh /entrypoint.sh
 # Default configuration.
 COPY mopidy.conf /config/mopidy.conf
 
-RUN mkdir -p /var/lib/snapserver
+RUN mkdir -p /var/lib/snapserver \
+ && chown mopidy:audio
 RUN snapserver -v
 COPY snapserver.conf /etc/default/snapserver
 
 # Copy the pulse-client configuratrion.
 COPY pulse-client.conf /etc/pulse/client.conf
-
-#RUN useradd -ms /bin/bash audio
 
 # Allows any user to run mopidy, but runs by default as a randomly generated UID/GID.
 ENV HOME=/var/lib/mopidy
