@@ -30,6 +30,8 @@ RUN set -ex \
         Mopidy-Moped \
         Mopidy-Pandora \
         Mopidy-YouTube \
+        Mopidy-TuneIn \
+        Mopidy-Local-SQLite \
         pyopenssl \
         youtube-dl \
  && mkdir -p /var/lib/mopidy/.config \
