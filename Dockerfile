@@ -41,9 +41,6 @@ RUN set -ex \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* ~/.cache
 
-RUN  apt-get update \
-  && apt-get install -y wget ca-certificates \
-  && rm -rf /var/lib/apt/lists/*
 RUN  wget https://github.com/badaix/snapcast/releases/download/v${snapcast_version}/snapserver_${snapcast_version}_amd64.deb
 RUN  dpkg -i snapserver_${snapcast_version}_amd64.deb \
   ;  apt-get update \
@@ -66,7 +63,7 @@ COPY pulse-client.conf /etc/pulse/client.conf
 ENV HOME=/var/lib/mopidy
 RUN set -ex \
  && usermod -G audio,sudo audio \
- && chown mopidy:audio -R $HOME /entrypoint.sh \
+ && chown audio:audio -R $HOME /entrypoint.sh \
  && chmod go+rwx -R $HOME /entrypoint.sh
 
 # Runs as mopidy user by default.
