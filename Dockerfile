@@ -55,6 +55,8 @@ COPY mopidy.conf /config/mopidy.conf
 
 RUN mkdir -p /var/lib/snapserver \
  && chown mopidy:audio -R /var/lib/snapserver
+RUN mkdir -p /var/run/snapserver \
+ && chown mopidy:audio -R /var/run/snapserver
 RUN snapserver -v
 COPY snapserver.conf /etc/default/snapserver
 
