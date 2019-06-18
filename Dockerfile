@@ -76,7 +76,7 @@ RUN set -ex \
 #RUN echo "mopidy ALL=NOPASSWD: /usr/local/lib/python2.7/dist-packages/mopidy_iris/system.sh" >> /etc/sudoers
 
 # Runs as mopidy user by default.
-USER root
+USER mopidy
 
 VOLUME ["/var/lib/mopidy/local", "/var/lib/mopidy/media"]
 
